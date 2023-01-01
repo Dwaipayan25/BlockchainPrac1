@@ -1,7 +1,9 @@
 import abi from './contracts/blc.json';
 import {useState,useEffect} from 'react';
 import {ethers} from 'ethers'; 
-
+import Home from './pages/Home';
+import Block from './pages/Block';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 function App() {
 
@@ -10,6 +12,8 @@ function App() {
     signer:null,
     contract:null,
   })
+
+  const [id,setId]=useState(0);
 
   const [account,setAccount] = useState('None');
   useEffect(()=>{
@@ -47,9 +51,19 @@ function App() {
   },[])
   console.log(state);
 
+  function setIdfunc(_id){
+    setId(_id);
+  }
+
   return (
     <div>
       Connected Account: {account}
+      <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home state={state} account={account} setid={setIdfunc}/>} />
+        <Route path="/block" element={<Block state={state} account={account} id={id}/>} />
+      </Routes>
+      </BrowserRouter>
     </div>
   );
 }
